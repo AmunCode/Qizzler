@@ -1,5 +1,6 @@
 from tkinter import *
 from quiz_brain import QuizBrain
+import time
 
 THEME_COLOR = "#375362"
 
@@ -32,19 +33,59 @@ class QuizInterface:
         self.window.mainloop()
 
     def get_next_question(self):
-        question_text = self.quiz.next_question()
-        self.canvas.itemconfig(self.question, text=question_text)
+        self.canvas.config(bg='white')
+        if self.quiz.still_has_questions()
+            question_text = self.quiz.next_question()
+            self.canvas.itemconfig(self.question, text=question_text)
+        else:
+            self.canvas.itemconfig(self.question, text="You have reached the end of the quiz!")
+            self.true_button.config(state='disabled')
+            self.false_button.config(state='disabled')
+
 
     def answer_true(self):
-        if self.quiz.check_answer('True'):
-            self.score += 1
-            self.score_label.config(text=f'score: {self.score}')
-        self.get_next_question()
+        self.give_feedback(self.quiz.check_answer('True'))
+        #     self.score += 1
+        #     self.score_label.config(text=f'score: {self.score}')
+        #     self.canvas.itemconfig(self.question, text="Correct!")
+        #     self.window.update()
+        #     self.window.after(1000)
+        # else:
+        #     self.canvas.itemconfig(self.question, text="Incorrect!")
+        #     self.window.update()
+        #     self.window.after(1000)
+        # self.get_next_question()
 
     def answer_false(self):
-        if self.quiz.check_answer('False'):
+        self.give_feedback(self.quiz.check_answer('False'))
+        # if self.quiz.check_answer('False'):
+        #     self.score += 1
+        #     self.score_label.config(text=f'score: {self.score}')
+        #     self.canvas.itemconfig(self.question, text="Correct!")
+        #     self.window.update()
+        #     self.window.after(1000)
+        #     self.canvas.itemconfig(self.question, text="Correct!")
+        # else:
+        #     self.canvas.itemconfig(self.question, text="Incorrect!")
+        #     self.window.update()
+        #     self.window.after(1000)
+        #     self.canvas.itemconfig(self.question, text="Correct!")
+        # self.get_next_question()
+
+    def give_feedback(self, is_correct):
+        if is_correct:
             self.score += 1
             self.score_label.config(text=f'score: {self.score}')
-        self.get_next_question()
+            self.canvas.itemconfig(self.question, text="Correct!")
+            self.window.update()
+            self.canvas.config(bg='green')
+            self.window.after(1000, self.get_next_question)
+        else:
+            self.canvas.itemconfig(self.question, text="Incorrect!")
+            self.window.update()
+            self.canvas.config(bg='red')
+            self.window.after(1000, self.get_next_question)
+
+
 
 
